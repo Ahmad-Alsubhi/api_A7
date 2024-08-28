@@ -14,7 +14,7 @@ def read_item(item_id: int, q: Optional[str] = None):
     return {"item_id": item_id, "q": q}
 
 import joblib
-#import sklearn.externals
+
 model = joblib.load('knn_model.joblib')
 scaler = joblib.load('scaler.joblib')
 
@@ -43,9 +43,9 @@ def preprocessing(input_features: InputFeatures):
         'Options_Full': input_features.Options == 'Full',
         'Options_Standard': input_features.Options == 'Standard'
         }
-    # Convert dictionary values to a list in the correct order
+   
     features_list = [dict_f[key] for key in sorted(dict_f)]
-    # Scale the input features
+ 
     scaled_features = scaler.transform([list(dict_f.values())])
     return scaled_features
 
