@@ -1,5 +1,6 @@
 fastapi[all]
-fastapi==0.112.2
-pydantic==2.8.2
-numpy==1.23.5
-joblib==1.1.1
+fastapi[all]
+pydantic[all]
+numpy[all]
+joblib[all]
+scikit-learn[all]
