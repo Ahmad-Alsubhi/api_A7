@@ -1,5 +1,4 @@
 fastapi[all]
-fastapi[all]
 pydantic[all]
 numpy[all]
 joblib[all]
