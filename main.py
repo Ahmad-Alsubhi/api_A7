@@ -1,27 +1,31 @@
-from fastapi import FastAPI, HTTPException
-from pydantic import BaseModel
-import joblib
-import numpy as np
+from typing import Optional
+
+from fastapi import FastAPI
 
 app = FastAPI()
 
 
-# GET request
 @app.get("/")
-def read_root():
-    return {"message": "Welcome to Tuwaiq Academy"}
+async def root():
+    return {"message": "Hello World"}
 
 
-# get request
 @app.get("/items/{item_id}")
-async def read_item(item_id):
-    return {"item_id": item_id}
+def read_item(item_id: int, q: Optional[str] = None):
+    return {"item_id": item_id, "q": q}
 
 
+import joblib
+
+# import sklearn.externals
 model = joblib.load("knn_model.joblib")
 scaler = joblib.load("scaler.joblib")
 
+from pydantic import BaseModel
+import sklearn.metrics
 
+
+# Define a Pydantic model for input data validation
 class InputFeatures(BaseModel):
     Year: int
     Engine_Size: float
@@ -37,27 +41,7 @@ def preprocessing(input_features: InputFeatures):
         "Engine_Size": input_features.Engine_Size,
         "Mileage": input_features.Mileage,
         "Type_Accent": input_features.Type == "Accent",
-        "Type_Land Cruiser": input_features.Type == "Land Cruiser",
-        "Make_Hyundai": input_features.Make == "Hyundai",
-        "Make_Mercedes": input_features.Make == "Mercedes",
-        "Options_Full": input_features.Options == "Full",
-        "Options_Standard": input_features.Options == "Standard",
-    }
-    return dict_f
-
-
-@app.get("/predict")
-def predict(input_features: InputFeatures):
-    return preprocessing(input_features)
-
-
-def preprocessing(input_features: InputFeatures):
-    dict_f = {
-        "Year": input_features.Year,
-        "Engine_Size": input_features.Engine_Size,
-        "Mileage": input_features.Mileage,
-        "Type_Accent": input_features.Type == "Accent",
-        "Type_Land Cruiser": input_features.Type == "Land Cruiser",
+        "Type_Land Cruiser": input_features.Type == "LandCruiser",
         "Make_Hyundai": input_features.Make == "Hyundai",
         "Make_Mercedes": input_features.Make == "Mercedes",
         "Options_Full": input_features.Options == "Full",
